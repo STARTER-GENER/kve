@@ -6,6 +6,7 @@ private Dictionary<string, (string password, UserRole role)> users = new Diction
     { "admin", ("admin123", UserRole.Admin) },
     { "client", ("client123", UserRole.Client) }
 };
+//часть кода
 private void button1_Click(object sender, EventArgs e)
 {
     string username = textBox1.Text.Trim();
@@ -27,6 +28,65 @@ private void button1_Click(object sender, EventArgs e)
             this.Hide();
             form.ShowDialog();
             this.Close();
+        }
+        else
+        {
+            MessageBox.Show("Неверный пароль", "Ошибка",
+            MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+    else
+    {
+        MessageBox.Show("Пользователь не найден", "Ошибка",
+        MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+public enum UserRole
+{
+    Admin,
+    Client
+}
+public static class UserSession
+{
+    public static UserRole Role { get; set; }
+    public static string Username { get; set; }
+}
+```
+# авторизация если нужно делать разные окна под разные роли:
+```
+private Dictionary<string, (string password, UserRole role)> users = new Dictionary<string, (string, UserRole)>
+{
+    { "admin", ("admin123", UserRole.Admin) },
+    { "client", ("client123", UserRole.Client) }
+};
+//часть кода
+private void button1_Click(object sender, EventArgs e)
+{
+    string username = textBox1.Text.Trim();
+    string password = textBox2.Text;
+    if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+    {
+        MessageBox.Show("Введите логин и пароль", "Ошибка",
+        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+    }
+    if (users.ContainsKey(username))
+    {
+        var userData = users[username];
+        if (userData.role == UserRole.Admin && userData.password == password)
+        {
+            UserSession.Username = username;
+            UserSession.Role = userData.role;
+            Form1 form = new Form1();
+            this.Hide();
+            form.ShowDialog();
+            this.Close();
+        }
+        else if (userData.role == UserRole.Client && userData.password == password)
+        {
+            UserSession.Username = username;
+            UserSession.Role = userData.role;
+            MessageBox.Show("Форма ещё не создана для данного пользователя", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         else
         {
