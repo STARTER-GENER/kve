@@ -1,5 +1,6 @@
 # kve
 # первая форма (какая-то авторизация):
+```
 private Dictionary<string, (string password, UserRole role)> users = new Dictionary<string, (string, UserRole)>
 {
     { "admin", ("admin123", UserRole.Admin) },
@@ -49,7 +50,9 @@ public static class UserSession
     public static UserRole Role { get; set; }
     public static string Username { get; set; }
 }
+```
 # вторая форма (какой-то sql запрос):
+```
 String connection = "Host=localhost;Port=5432;Database=airport;Username=postgres;Password=1";
 public Form2()
 {
@@ -80,7 +83,9 @@ void LoadData()
         MessageBox.Show($"Ошибка: {ex.Message}");
     }
 }
+```
 # переход с одной формы на другую (пример):
+```
 private void button1_Click(object sender, EventArgs e)
 {
     Form2 form = new Form2();
@@ -88,3 +93,4 @@ private void button1_Click(object sender, EventArgs e)
     form.ShowDialog();
     this.Close();
 }
+```
